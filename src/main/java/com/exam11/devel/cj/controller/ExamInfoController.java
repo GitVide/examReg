@@ -21,7 +21,7 @@ public class ExamInfoController {
     public String getExamInfoList(Model model){
         List<ExamInfo> examInfoList = examInfoService.getExamInfo();
         model.addAttribute("examInfoList", examInfoList);
-        return "tables";
+        return "jqgrid";
     }
 
 }
