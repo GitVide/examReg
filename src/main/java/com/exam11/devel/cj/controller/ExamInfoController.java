@@ -6,22 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/exam")
 public class ExamInfoController {
 
     @Autowired
     private ExamInfoService examInfoService;
 
 
-    @RequestMapping("/setting")
-    public String getExamInfoList(Model model){
+    @RequestMapping(value = "/examSetting", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public List<ExamInfo> getExamInfoList(Model model) {
         List<ExamInfo> examInfoList = examInfoService.getExamInfo();
         model.addAttribute("examInfoList", examInfoList);
-        return "jqgrid";
+        return examInfoList;
     }
 
+    @RequestMapping("/jqgrid")
+    public String jqgrid(){
+        return "jqgrid";
+    }
 }
