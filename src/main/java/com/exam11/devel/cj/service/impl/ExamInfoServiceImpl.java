@@ -18,9 +18,22 @@ public class ExamInfoServiceImpl implements ExamInfoService {
     @Override
     public List<ExamInfo> getExamInfo() {
         List<ExamInfo> examInfoList = examInfoMapper.selectExamInfoList();
-        for (ExamInfo l: examInfoList) {
-            System.out.println(l.getExamName());
+        for (ExamInfo l : examInfoList) {
+            System.out.println(l.getExamId());
         }
         return examInfoList;
+    }
+
+    @Override
+    public List<ExamInfo> findAll(Integer page, Integer rows) {
+        Integer start = (page - 1) * rows;
+        List<ExamInfo> examInfoList = examInfoMapper.findAll(start, rows);
+        return examInfoList;
+    }
+
+    @Override
+    public Long findTotals() {
+        Long totals = examInfoMapper.findTotals();
+        return totals;
     }
 }

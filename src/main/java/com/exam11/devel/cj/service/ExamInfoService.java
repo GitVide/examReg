@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ExamInfoService {
     List<ExamInfo> getExamInfo();
+
+    List<ExamInfo> findAll(Integer page, Integer rows);
+
+    Long findTotals();
 }

@@ -18,13 +18,18 @@
 </head>
 
 <body>
-<div>
-    <div>
-        <h1>
-            考次设置
-        </h1>
+<style>
+    th {
+        text-align: center;
+    }
+</style>
+<div class="col-sm-10">
+    <!--    巨幕-->
+    <div class="jumbotron">
+        <h3>考次设置</h3>
+        <p class="text-info">描述</p>
     </div>
-    <!--考次表格-->
+    <!--jqGrid考次表格-->
     <table id="exam-table"></table>
     <div id="pager"></div>
 </div>
@@ -34,54 +39,37 @@
         $("#exam-table").jqGrid({
             styleUI: "Bootstrap",
             url: "http://localhost:8080/examSetting",
-            datatype: "json",
+            datatype: "JSON",
             mtype: "POST",
             editurl: "",
             colNames: ["考次编号", "是否为当前考次", "是否过期"],//用来指定表格中标题列的名称
             colModel: [
-                {name: "examName", align: "center", editable: true},
+                {name: "examId", align: "center", editable: true},
                 {
-                    name: "isUsed",
-                    formatter: function (cellvalue, options, rowObject) {
-
-                        if (cellvalue == 1) {
-                            return "是";
-                        } else {
-                            return "否";
-                        }
-                    },
-                    align: "center",
-                    editable: true,
-                    edittype: "select",
+                    name: "isUsed", align: "center", editable: true, edittype: "select",
                     editoptions: {
                         value: "1:是; 0:否"
-
                     }
                 },
                 {
-                    name: "isNow",
-                    align: "center",
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == 1) {
-                            return "是";
-                        } else {
-                            return "否";
-                        }
-                    },
-                    editable: true,
+                    name: "isNow", align: "center", editable: true,
                 },
             ],
             pager: "#pager",//用来定义分页工具栏
             viewrecords: true,//展示总条数
             rowNum: 5,//每页显示多少条
+            rowList: [5, 10, 15, 20],
             caption: "考次设置",
-            hidegrid: false,
+            // hidegrid: false,
             autowidth: true,//自适应父容器
             height: 350,
-        }).navGrid("#pager");//加入快速编辑
-        // 参数1：编辑按钮的位置
-        // 参数2：展示编辑的配置对象
-        // 参数3：代表对编辑页面的配置
+        }).navGrid("#pager",//加入快速编辑,参数1：编辑按钮的位置
+            {add: true, edit: true, del: true, search: true, refresh: true}, // 参数2：展示编辑的配置对象
+            {height: 600, width: 700, closeAfterEdit: true, reloadAfterSubmit: true},
+            {height: 600, width: 700, closeAfterAdd: true, reloadAfterSubmit: true},
+            {closeAfterDelete: true, reloadAfterSubmit: true}); // 参数3：编辑面板的配置
+
+
         // 参数4：添加面板的配置
         // 参数5：删除面板的配置
         // 参数6：搜索面板的配置

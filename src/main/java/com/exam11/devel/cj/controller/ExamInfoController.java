@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ExamInfoController {
@@ -20,14 +22,23 @@ public class ExamInfoController {
 
     @RequestMapping(value = "/examSetting", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public List<ExamInfo> getExamInfoList(Model model) {
-        List<ExamInfo> examInfoList = examInfoService.getExamInfo();
-        model.addAttribute("examInfoList", examInfoList);
-        return examInfoList;
+    public Map<String, Object> getExamInfoList(Integer page, Integer rows) {
+        //当前页数据
+        List<ExamInfo> examInfoList = examInfoService.findAll(page, rows);
+        //总条数
+        Long totals = examInfoService.findTotals();
+        //总页数
+        Long totalPages = totals % page == 0 ? totals / rows : totals / rows + 1;
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("rows", examInfoList);
+        map.put("total", totalPages);
+        map.put("records", totals);
+        return map;
     }
 
     @RequestMapping("/jqgrid")
-    public String jqgrid(){
+    public String jqgrid() {
         return "jqgrid";
     }
 }
